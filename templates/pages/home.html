@@ -20,8 +20,18 @@ Welcome to POSTer!
     const url = "/tweets"
     const responseType = 'json'
 
+    function HandleLikeButtonClick(tweet_id, currentCount) {
+        console.log("Like button clicked for tweet id: " + tweet_id + " with current count: " + currentCount)
+        currentCount += 1
+    }
+
+    function LikeButton(tweet){
+        return "<button class='btn btn-primary btn-sm' onclick=HandleLikeButtonClick(" + tweet.id + "," + tweet.likes + ")>" + tweet.likes + "Likes</button>"
+    }
+
     function formatTweetElement(tweet) {
-        var formattedTweet = "<div class='mb-4 tweet' id='tweet-id" + tweet.id + "'><p>" + tweet.content + "</p>" + "</div>"
+        var formattedTweet = "<div class='mb-4 tweet' id='tweet-id" + tweet.id 
+        + "'><p>" + tweet.content + "</p><div class='btn-group'>" + LikeButton(tweet) + "</div>" + "</div>"
         return formattedTweet
     }
 
