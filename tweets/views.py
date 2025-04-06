@@ -16,7 +16,7 @@ def home_view(request, *args, **kwargs):
 
 def tweet_list_view(request, *args, **kwargs):
     qs = Tweet.objects.all()
-    tweet_list = [{"id": x.id, "content": x.content, "likes": random.randint(0,1000)} for x in qs]
+    tweet_list = [x.serialize() for x in qs]
     data = {
         "isUser": False,
         "response": tweet_list
@@ -30,7 +30,7 @@ def tweet_create_view(request, *args, **kwargs):
         obj = form.save(commit=False)
         obj.save()
         if request.headers.get('x-requested-with') == 'XMLHttpRequest': # test ajax
-            return JsonResponse({}, status=201)
+            return JsonResponse(obj.serialize(), status=201)
         if next_url != None and url_has_allowed_host_and_scheme(next_url, ALLOWED_HOSTS):
             return redirect(next_url)
         form = TweetForm()
