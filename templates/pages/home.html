@@ -76,6 +76,10 @@
             } else if(xhr.status === 500){ // server error
                 alert("Server error occurred while creating tweet")
             }
+             else if(xhr.status === 401){ // server error
+                alert("Login bruh")
+                window.location.href = "/login"
+            }
         }
         // can't even handle xhr request / major error
         xhr.onerror = function() {
@@ -98,7 +102,7 @@
         xhr.onload = function() {
             console.log(xhr.response)
             const serverResponse = xhr.response
-            var listedItems = serverResponse.response
+            var listedItems = serverResponse
             var finalTweetStr = ""
             var i;
             for(i=0; i < listedItems.length; i++){

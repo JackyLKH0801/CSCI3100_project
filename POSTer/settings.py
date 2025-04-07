@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-h5iomr2v%8ov&2^bdi4mp$r6fuxh_n_b=rictjb1brf19v+%l9
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+LOGIN_URL = "/login" #login with "/login"
+MAX_TWEET_LENGTH = 240
 ALLOWED_HOSTS = ['127.0.0.1']
 
 
@@ -39,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #3rd party 
+    'rest_framework',
+    #internal
     'tweets',
 ]
 
