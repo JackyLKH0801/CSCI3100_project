@@ -35,14 +35,22 @@
         xhr.setRequestHeader('HTTP_X_REQUESTED_WITH', 'XMLHttpRequest')
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
         xhr.onload = function() {
-            console.log('xhr ', xhr.status)
             if(xhr.status === 201){
                 const newTweet = xhr.response
                 const newTweetElement = formatTweetElement(newTweet)
                 const ogHTML = tweetsElement.innerHTML
                 tweetsElement.innerHTML = newTweetElement + ogHTML
                 myForm.reset()
+            } else if(xhr.status === 400){ // bad request
+                const errorResponse = xhr.response
+                console.log(errorResponse)
+            } else if(xhr.status === 500){ // server error
+                alert("Server error occurred while creating tweet")
             }
+        }
+        // can't even handle xhr request / major error
+        xhr.onerror = function() {
+            alert("Error occurred while creating tweet")
         }
         xhr.send(myFormData)
     }

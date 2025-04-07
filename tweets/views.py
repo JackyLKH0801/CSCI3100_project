@@ -24,6 +24,7 @@ def tweet_list_view(request, *args, **kwargs):
     return JsonResponse(data)
 
 def tweet_create_view(request, *args, **kwargs):
+
     form = TweetForm(request.POST or None)
     next_url = request.POST.get("next") or None
     if form.is_valid():
@@ -34,4 +35,7 @@ def tweet_create_view(request, *args, **kwargs):
         if next_url != None and url_has_allowed_host_and_scheme(next_url, ALLOWED_HOSTS):
             return redirect(next_url)
         form = TweetForm()
+    if form.errors:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest': # If ajax request
+            return JsonResponse(form.errors, status=400)
     return render(request, 'components/form.html', context={"form": form}, status=200)
