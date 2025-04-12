@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
 from .models import Tweet
 from .forms import TweetForm
-from .serializers import TweetSerializer, TweetActionSerializer
+from .serializers import TweetSerializer, TweetActionSerializer, TweetCreateSerializer
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
@@ -47,7 +47,7 @@ def tweet_list_view_pure_django(request, *args, **kwargs):
 # @authentication_classes([SessionAuthentication]) #session authentication
 @permission_classes([IsAuthenticated]) #only authenticated users can create tweets
 def tweet_create_view(request, *args, **kwargs):
-    serializer = TweetSerializer(data = request.POST or None)
+    serializer = TweetCreateSerializer(data = request.POST or None)
     if serializer.is_valid(raise_exception=True):
         serializer.save(user = request.user)
         return Response(serializer.data, status = 201)
