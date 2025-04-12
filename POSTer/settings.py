@@ -28,7 +28,9 @@ SECRET_KEY = 'django-insecure-h5iomr2v%8ov&2^bdi4mp$r6fuxh_n_b=rictjb1brf19v+%l9
 DEBUG = True
 LOGIN_URL = "/login" #login with "/login"
 MAX_TWEET_LENGTH = 240
+TWEET_ACTION_OPTIONS = ["like", "unlike", "retweet"]
 ALLOWED_HOSTS = ['127.0.0.1']
+
 
 
 # Application definition
