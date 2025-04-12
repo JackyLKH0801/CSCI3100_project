@@ -75,3 +75,16 @@ def tweet_create_view_pure_django(request, *args, **kwargs):
         if request.headers.get('x-requested-with') == 'XMLHttpRequest': # If ajax request
             return JsonResponse(form.errors, status=400)
     return render(request, 'components/form.html', context={"form": form}, status=200)
+
+@api_view(['DELETE', 'POST']) #http method the client == DELETE or POST
+@permission_classes([IsAuthenticated]) #only authenticated users can delete tweets
+def tweet_delete_view(request, tweet_id, *args, **kwargs):
+    qs = Tweet.objects.filter(id=tweet_id)
+    if not qs.exists(): #tweet not found
+        return Response({}, status=404)
+    qs = qs.filter(user=request.user)
+    if not qs.exists(): #unauthorized user
+        return Response({"message": "You cannot delete this tweet"}, status=401)
+    obj = qs.first()
+    obj.delete()
+    return Response({"message": "Tweet deleted"}, status=200)   #delete success

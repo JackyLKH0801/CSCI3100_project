@@ -129,12 +129,17 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+DEAFULT_RENDERER_CLASSES = [
+    'rest_framework.renderers.JSONRenderer',
+]
+if DEBUG:
+    DEAFULT_RENDERER_CLASSES += [
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
     ],
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer', 
-    ]
+    'DEFAULT_RENDERER_CLASSES': DEAFULT_RENDERER_CLASSES,
 }
