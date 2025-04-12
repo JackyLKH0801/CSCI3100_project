@@ -14,6 +14,7 @@ class TweetLike(models.Model):
         
 # Create your models here.
 class Tweet(models.Model):
+    parent = models.ForeignKey('self', null=True, on_delete=models.SET_NULL) #allow for retweets
     user = models.ForeignKey(User, on_delete=models.CASCADE) #delete default = 1 later. Code breaks if no default for some reason.
     content = models.TextField(blank=True, null=True)
     image = models.FileField(upload_to='images/', blank=True, null=True)

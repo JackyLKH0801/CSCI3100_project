@@ -22,6 +22,7 @@ class TweetSerializer(serializers.ModelSerializer):
 class TweetActionSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     action = serializers.CharField()
+    content = serializers.CharField(required=False, allow_blank=True)
     
     def validate_action(self, value):
         value = value.lower().strip() # turn to lowercase: Like -> like
