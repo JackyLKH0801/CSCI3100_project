@@ -10,6 +10,10 @@ To run the project:
 4. pipenv install django-cors-headers
 5. ./manage.py runserver
 
+To run the project on React.js
+1. cd to poster-web path
+2. npm start
+
 Changing model.py run:
 1. ./manage.py makemigrations
 2. ./manage.py migrate  
