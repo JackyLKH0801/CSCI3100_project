@@ -7,7 +7,7 @@ To run the project:
 1. cd to CSCI3100-project path
 2. pipenv shell
 3. pipenv install djangorestframework
-4. install Node.js
+4. pipenv install django-cors-headers
 5. ./manage.py runserver
 
 Changing model.py run:
