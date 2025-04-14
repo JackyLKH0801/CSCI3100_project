@@ -24,7 +24,7 @@ def tweet_detailed_view(request, tweet_id, *args, **kwargs):
     qs = Tweet.objects.filter(id=tweet_id)
     if not qs.exists():
         return Response ({}, status=404)
-    obj = qs.first
+    obj = qs.first()
     serializer = TweetSerializer(obj)
     return Response(serializer.data, status = 200)
 
