@@ -13,7 +13,7 @@ if (rootContainer){
       </StrictMode>
   )
 }
-const container = document.getElementById('cfe-tweets')
+const container = document.getElementById('POSTer')
 if (container){
 const tweetsEl = ReactDOM.createRoot(container);
 tweetsEl.render(

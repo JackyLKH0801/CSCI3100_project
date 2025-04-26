@@ -12,6 +12,7 @@ To run the project:
 
 To run the project on React.js
 1. cd to poster-web path
+2. npm install react-scripts --save (if needed)
 2. npm start
 
 Changing model.py run:
