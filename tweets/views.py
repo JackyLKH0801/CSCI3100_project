@@ -47,7 +47,7 @@ def tweet_list_view_pure_django(request, *args, **kwargs):
 # @authentication_classes([SessionAuthentication]) #session authentication
 @permission_classes([IsAuthenticated]) #only authenticated users can create tweets
 def tweet_create_view(request, *args, **kwargs):
-    serializer = TweetCreateSerializer(data = request.POST or None)
+    serializer = TweetCreateSerializer(data = request.data or None)
     if serializer.is_valid(raise_exception=True):
         serializer.save(user = request.user)
         return Response(serializer.data, status = 201)

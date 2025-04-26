@@ -1,19 +1,23 @@
 import React, {useEffect, useState} from 'react'
-import { loadTweets } from '../lookup';
+import { createTweet, loadTweets } from '../lookup';
 
 export function TweetsComponent(props){
     const textAreaRef = React.createRef()
     const [newTweets, setNewTweets] = useState([])
+    const handleBackendUpdate = (response, status) => {
+      let tempNewTweets = [...newTweets]
+      if (status === 201) {
+          tempNewTweets.unshift(response)
+          setNewTweets(tempNewTweets)
+      } else {
+          console.log(response)
+          alert("An error occurred while creating the tweet.")
+      }
+    }
     const handleSubmit = (event) => {
         event.preventDefault()
-        const newVal = textAreaRef.current.value 
-        let tempNewTweets = [...newTweets]
-        tempNewTweets.unshift({
-            content: newVal,
-            likes: 0,
-            id: 123123
-        })
-        setNewTweets(tempNewTweets)
+        const newVal = textAreaRef.current.value
+        createTweet(newVal, handleBackendUpdate)
         textAreaRef.current.value = ''
     }
     return <div className={props.className}>
@@ -22,7 +26,7 @@ export function TweetsComponent(props){
             <textarea ref={textAreaRef} required={true} className='form-control'>
 
             </textarea>
-            <button type='submit' className='btn btn-primary my-3'>Tweet</button>
+            <button type='submit' className='btn btn-primary my-3'>Post</button>
     </form>
     </div>
     <TweetsList newTweets={newTweets}/>
@@ -32,6 +36,7 @@ export function TweetsComponent(props){
 export  function TweetsList(props){
     const [tweetsInit, setTweetsInit] =useState([])
     const [tweets, setTweets] = useState([])
+    const [tweetsDidSet, setTweetsDidSet] = useState(false)
     console.log(props.newTweets)
     useEffect(() =>{
         const final = [...props.newTweets].concat(tweetsInit)
@@ -40,16 +45,19 @@ export  function TweetsList(props){
         }
     },[props.newTweets, tweetsInit, tweets.length])
     useEffect(() => {
-      const myCallback = (response, status) => {
-        if (status === 200) {
-          setTweetsInit(response);
-        } else {
-            alert("error occured!",status,"response", response)
+      if (tweetsDidSet === false){
+        const myCallback = (response, status) => {
+          if (status === 200) {
+            setTweetsInit(response);
+            setTweetsDidSet(true)
+          } else {
+              alert("error occured!",status,"response", response)
+          }
         }
+        loadTweets(myCallback)
       }
-      loadTweets(myCallback)
     
-    }, []);
+    }, [tweetsDidSet, setTweetsDidSet]);
     return tweets.map((item, index) => { 
       return <Tweet tweet={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-{item.id}`}/>
     })
