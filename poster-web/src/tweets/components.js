@@ -1,99 +1,23 @@
-import React, {useEffect, useState} from 'react'
-import { createTweet, loadTweets } from '../lookup';
-
+import React, {useState} from 'react'
+import { TweetsList } from './list';
+import {TweetCreate} from './create';
 export function TweetsComponent(props){
-    const textAreaRef = React.createRef()
+  console.log("props are ", props)
     const [newTweets, setNewTweets] = useState([])
-    const handleBackendUpdate = (response, status) => {
+    const canPost = props.canPost === 'false' ? false : true
+    const handlenewTweet = (newTweet) => {
       let tempNewTweets = [...newTweets]
-      if (status === 201) {
-          tempNewTweets.unshift(response)
-          setNewTweets(tempNewTweets)
-      } else {
-          console.log(response)
-          alert("An error occurred while creating the tweet.")
-      }
+      tempNewTweets.unshift(newTweet)
+      setNewTweets(tempNewTweets)
     }
-    const handleSubmit = (event) => {
-        event.preventDefault()
-        const newVal = textAreaRef.current.value
-        createTweet(newVal, handleBackendUpdate)
-        textAreaRef.current.value = ''
-    }
-    return <div className={props.className}>
-        <div className='col-12 mb-3'>
-        <form onSubmit = {handleSubmit}>
-            <textarea ref={textAreaRef} required={true} className='form-control'>
 
-            </textarea>
-            <button type='submit' className='btn btn-primary my-3'>Post</button>
-    </form>
-    </div>
-    <TweetsList newTweets={newTweets}/>
+    return <div className={props.className}>
+        {
+        canPost === true &&<TweetCreate didTweet={handlenewTweet} className='col-12 mb-3' />
+        }
+    <TweetsList newTweets={newTweets} {...props}/>
     </div>
 }
 
-export  function TweetsList(props){
-    const [tweetsInit, setTweetsInit] =useState([])
-    const [tweets, setTweets] = useState([])
-    const [tweetsDidSet, setTweetsDidSet] = useState(false)
-    console.log(props.newTweets)
-    useEffect(() =>{
-        const final = [...props.newTweets].concat(tweetsInit)
-        if (final.length !== tweets.length){
-            setTweets(final)
-        }
-    },[props.newTweets, tweetsInit, tweets.length])
-    useEffect(() => {
-      if (tweetsDidSet === false){
-        const myCallback = (response, status) => {
-          if (status === 200) {
-            setTweetsInit(response);
-            setTweetsDidSet(true)
-          } else {
-              alert("error occured!",status,"response", response)
-          }
-        }
-        loadTweets(myCallback)
-      }
-    
-    }, [tweetsDidSet, setTweetsDidSet]);
-    return tweets.map((item, index) => { 
-      return <Tweet tweet={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-{item.id}`}/>
-    })
-  
-  }
-export function ActionBtn(props){
-    const {tweet, action} = props
-    const [likes,setLikes] = useState(tweet.likes ? tweet.likes : 0)
-    const [userLike, setUserLike] = useState(tweet.userLike === true ? true : false)
-    const className = props.className ? props.className : `btn btn-primary btn-sm`
-    const actionDisplay = action.display ? action.display : 'Action' 
-    const display = action.type === 'like' ? `${likes} ${actionDisplay}` : actionDisplay
-    const handleClick = (event) => {
-        event.preventDefault()
-        if (action.type === 'like') {
-            if(userLike === true){ 
-            setLikes(likes-1)
-            setUserLike(false)
-            }
-            else{
-            setLikes(likes+1)
-            setUserLike(true)
-            }
-        }
-    }
-    return <button className={className} onClick={handleClick}>{display}</button> 
-  }
-export  function Tweet(props) {
-    const {tweet} = props
-    const className = props.className ? props.className : 'col-10 mx-auto col-md-6'
-    return <div className={className}>
-        <p>{tweet.id} - {tweet.content}</p> 
-        <div className='btn btn-group'>
-          <ActionBtn tweet = {tweet} action={{type:"like", display:"Likes"}}/>
-          <ActionBtn tweet = {tweet} action={{type:"unlike", display:"UnLike"}}/>
-          <ActionBtn tweet = {tweet} action={{type:"retweet"}}/>
-        </div>
-      </div>
-    }
+
+

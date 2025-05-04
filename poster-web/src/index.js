@@ -1,8 +1,9 @@
-import {React, StrictMode} from 'react';
+import React from 'react';
+import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+// import reportWebVitals from './reportWebVitals';
 import { TweetsComponent } from './tweets';
 const rootContainer =document.getElementById('root');
 if (rootContainer){
@@ -15,10 +16,15 @@ if (rootContainer){
 }
 const container = document.getElementById('POSTer')
 if (container){
-const tweetsEl = ReactDOM.createRoot(container);
+  console.log(container.dataset); 
+const tweetsEl = ReactDOM.createRoot(container); //note that the ReactDOM is container and not tweetsEl
+console.log(container.dataset)
 tweetsEl.render(
   <StrictMode>
-<TweetsComponent />
+<TweetsComponent 
+  username={container.dataset.username} 
+  canPost={container.dataset.canPost}  />
+
 </StrictMode>
 );
 }
