@@ -30,9 +30,16 @@ export function backendLookup(method, endpoint, callback, data) {
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
         xhr.setRequestHeader('X-CSRFToken', csrftoken)
     }
+
     xhr.onload = function() {
-        callback(xhr.response, xhr.status)  
-    }
+        console.log("XHR status:", xhr.status);  // Should log 403
+        console.log("Raw response:", xhr.response);  // Should show the JSON
+        if (xhr.status === 403 && xhr.response.detail === "Authentication credentials were not provided.") {
+            window.location.href = "/login?showLoginRequired=true";  // Redirect to the login page
+          }
+        
+        callback(xhr.response, xhr.status)
+        }
     xhr.onerror = function(e) {
         console.log(e)
         callback({"message": "The request was an error"}, 400)
@@ -40,4 +47,3 @@ export function backendLookup(method, endpoint, callback, data) {
     console.log(jsonData)
     xhr.send(jsonData)
 }
-

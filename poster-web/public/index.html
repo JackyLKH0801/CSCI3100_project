@@ -30,7 +30,13 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-      <div id="POSTer" data-username="tesst" data-can-post="false"></div>
+    <div id="tweet-container"></div>
+    <div id="POSTer"></div>
+      <!--
+          <div class="POSTer-detail" data-tweet-id='1' data-class-name='col-6 mx-auto' ></div>
+          <div class="d-none" id="POSTer" data-username="pekkacarl" data-can-post="false"></div>
+          pass the above lines or copy them to see if specific elements are rendering 
+      -->
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -41,5 +47,20 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+      <script>
+        var path = window.location.pathname;
+        var idRegex = /(?<tweetid>\d+)/
+        var match = path.match(idRegex);
+          if (match) {
+            var TweetID = match.groups.tweetid;
+            var postEl = document.getElementById("POSTer");
+            postEl.className = 'd-none';
+            var tweetHTML = "<div class='POSTer-detail' data-tweet-id='" + TweetID + "' data-class-name='col-6 mx-auto'></div>";
+            var mainContainer = document.getElementById("tweet-container");
+            mainContainer.innerHTML = tweetHTML;
+          }
+        
+        
+        </script>
   </body>
 </html>

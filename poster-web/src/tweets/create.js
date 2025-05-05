@@ -2,7 +2,6 @@ import React from 'react'
 import { apitweetCreate} from './lookup';
 
 export function TweetCreate(props){
-  console.log("props are ", props)
     const {didTweet} = props 
     const textAreaRef = React.createRef()
     const handleBackendUpdate = (response, status) => {

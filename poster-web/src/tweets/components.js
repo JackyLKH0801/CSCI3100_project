@@ -1,8 +1,9 @@
-import React, {useState} from 'react'
-import { TweetsList } from './list';
+import React, {useEffect, useState} from 'react'
+import {TweetsList} from './list';
 import {TweetCreate} from './create';
+import {apitweetDetail} from './lookup';
+import { Tweet } from './detail';
 export function TweetsComponent(props){
-  console.log("props are ", props)
     const [newTweets, setNewTweets] = useState([])
     const canPost = props.canPost === 'false' ? false : true
     const handlenewTweet = (newTweet) => {
@@ -18,6 +19,25 @@ export function TweetsComponent(props){
     <TweetsList newTweets={newTweets} {...props}/>
     </div>
 }
-
+export function TweetDetailComponent(props){
+    const {tweetId} = props
+    const [didLookup,setDidLookup] = useState(false)
+    const [tweet, setTweet] = useState(null)
+    const handleBackendLookup = (response,status) =>{
+      if (status === 200){
+        setTweet(response)
+      }
+      else {
+        alert("Cant find post.")
+      }
+    }
+    useEffect(()=>{
+        if (didLookup === false){
+          apitweetDetail(tweetId, handleBackendLookup)
+          setDidLookup(true)
+        }
+    },[tweetId, didLookup, setDidLookup, handleBackendLookup])
+  return tweet === null ? null : <Tweet tweet= {tweet} className= {props.className} />
+}
 
 

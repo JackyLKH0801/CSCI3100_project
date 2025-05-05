@@ -1,10 +1,10 @@
 import React from 'react';
-import { StrictMode } from 'react';
+import {StrictMode} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 // import reportWebVitals from './reportWebVitals';
-import { TweetsComponent } from './tweets';
+import {TweetsComponent, TweetDetailComponent} from './tweets';
 const rootContainer =document.getElementById('root');
 if (rootContainer){
   const appEl = ReactDOM.createRoot(rootContainer)
@@ -14,21 +14,28 @@ if (rootContainer){
       </StrictMode>
   )
 }
-const container = document.getElementById('POSTer')
-if (container){
-  console.log(container.dataset); 
-const tweetsEl = ReactDOM.createRoot(container); //note that the ReactDOM is container and not tweetsEl
-console.log(container.dataset)
+const postContainer = document.getElementById('POSTer')
+if (postContainer){
+  console.log(postContainer.dataset); 
+const tweetsEl = ReactDOM.createRoot(postContainer); //note that the ReactDOM is postContainer and not tweetsEl
+console.log(postContainer.dataset);
 tweetsEl.render(
   <StrictMode>
 <TweetsComponent 
-  username={container.dataset.username} 
-  canPost={container.dataset.canPost}  />
+  username={postContainer.dataset.username} 
+  canPost={postContainer.dataset.canPost}  />
 
 </StrictMode>
 );
 }
+const tweetDetailElements = document.querySelectorAll(".POSTer-detail")
+tweetDetailElements.forEach(container=>{
+ const root = ReactDOM.createRoot(container);
+ root.render(
+  React.createElement(TweetDetailComponent, container.dataset, container)
+ )
 
+})
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

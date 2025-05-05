@@ -11,9 +11,10 @@ export function apitweetDetail(tweetid, callback) {
     backendLookup("GET", `tweets/${tweetid}`, callback)
 }
 export function apitweetList(username, callback) {
-    let endpoint = "/tweets"
+    let endpoint = "tweets/"
     if (username){
-        endpoint =  `/tweets/?username=${username}`
+        endpoint =  `tweets/?username=${username}`
     }
+   
     backendLookup("GET", endpoint, callback)
 }
