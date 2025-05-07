@@ -19,6 +19,9 @@ ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 def user_follow_view(request, username, *args, **kwargs):
     current_user = request.user
     to_follow_user_qs = User.objects.filter(username = username)
+    if current_user.username == username:
+        my_followers_qs = current_user.profile.followers.all()
+        return Response({"count": my_followers_qs.count()}, status = 200)
     if not to_follow_user_qs.exists():
         return Response({}, status = 404)
     to_follow_user = to_follow_user_qs.first()
@@ -32,4 +35,4 @@ def user_follow_view(request, username, *args, **kwargs):
     else:
         pass
     current_followers_qs = profile.followers.all()
-    return Response({"followers": current_followers_qs.count()}, status = 200)
+    return Response({"count": current_followers_qs.count()}, status = 200)
