@@ -21,7 +21,7 @@ def profile_detail_api_view(request, username, *args, **kwargs):
     if not qs.exists():
         raise Response({"detail": "User not found"}, status = 404)
     profile_obj = qs.first()
-    data = PublicProfileSerializer(instance=profile_obj).data
+    data = PublicProfileSerializer(instance=profile_obj, context={"request": request}).data
     return Response(data, status = 200)
 
 @api_view(['GET', 'POST'])
