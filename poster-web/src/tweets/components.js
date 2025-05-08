@@ -1,8 +1,26 @@
 import React, {useEffect, useState} from 'react'
 import {TweetsList} from './list';
+import {TweetsFeedList} from './feed'; 
 import {TweetCreate} from './create';
 import {apitweetDetail} from './lookup';
 import { Tweet } from './detail';
+
+export function FeedComponent(props){
+  const [newTweets, setNewTweets] = useState([])
+  const canPost = props.canPost === 'false' ? false : true
+  const handlenewTweet = (newTweet) => {
+    let tempNewTweets = [...newTweets]
+    tempNewTweets.unshift(newTweet)
+    setNewTweets(tempNewTweets)
+  }
+
+  return <div className={props.className}>
+      {
+      canPost === true &&<TweetCreate didTweet={handlenewTweet} className='col-12 mb-3' />
+      }
+  <TweetsFeedList newTweets={newTweets} {...props}/>
+  </div>
+}
 export function TweetsComponent(props){
     const [newTweets, setNewTweets] = useState([])
     const canPost = props.canPost === 'false' ? false : true

@@ -35,11 +35,13 @@ export function backendLookup(method, endpoint, callback, data) {
         console.log("XHR status:", xhr.status);  // Should log 403
         console.log("Raw response:", xhr.response);  // Should show the JSON
         if (xhr.status === 403 && xhr.response.detail === "Authentication credentials were not provided.") {
-            window.location.href = "/login?showLoginRequired=true";  // Redirect to the login page
-          }
+            if(window.location.href.indexOf("login") === -1) {
+                window.location.href = "/login?showLoginRequired=true";  // Redirect to the login page
+            }
+        }
         
         callback(xhr.response, xhr.status)
-        }
+    }
     xhr.onerror = function(e) {
         console.log(e)
         callback({"message": "The request was an error"}, 400)

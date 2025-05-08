@@ -10,6 +10,13 @@ export function apitweetAction(tweetid, action, callback) {
 export function apitweetDetail(tweetid, callback) {
     backendLookup("GET", `tweets/${tweetid}`, callback)
 }
+export function apitweetFeed(callback, nextUrl) {
+    let endpoint = "tweets/feed/"
+    if (nextUrl !== null && nextUrl !== undefined){
+        endpoint = nextUrl.replace("http://localhost:8000/api/", "")
+    }
+    backendLookup("GET", endpoint, callback)
+}
 export function apitweetList(username, callback, nextUrl) {
     let endpoint = "tweets/"
     if (username){
