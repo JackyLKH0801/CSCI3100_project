@@ -1,5 +1,6 @@
 from django.conf import settings
 from rest_framework import serializers
+from profiles.serializers import PublicProfileSerializer
 from .models import Tweet
 
 MAX_TWEET_LENGTH = settings.MAX_TWEET_LENGTH
@@ -17,11 +18,13 @@ class TweetActionSerializer(serializers.Serializer):
         return value
     
 class TweetCreateSerializer(serializers.ModelSerializer):
+    user = PublicProfileSerializer(source = 'user.profile', read_only = True)
+    # user = serializers.SerializerMethodField(read_only=True)
     likes = serializers.SerializerMethodField(read_only=True)
     
     class Meta:
         model = Tweet
-        fields = ['id', 'content', 'likes', 'image', 'timestamp']
+        fields = ['user', 'id', 'content', 'likes', 'image', 'timestamp']
         
     def get_likes(self, obj):
         return obj.likes.count() # count the number of likes
@@ -30,15 +33,22 @@ class TweetCreateSerializer(serializers.ModelSerializer):
         if len(value) > MAX_TWEET_LENGTH:
             raise serializers.ValidationError(f"Max length is {MAX_TWEET_LENGTH} characters.")
         return value
+    
+    # def get_user(self, obj):
+    #     return obj.user.id
 
 class TweetSerializer(serializers.ModelSerializer):
+    user = PublicProfileSerializer(source = 'user.profile', read_only = True)
+    # user = serializers.SerializerMethodField(read_only=True)
     likes = serializers.SerializerMethodField(read_only=True)
     parent = TweetCreateSerializer(read_only=True)
     
     class Meta:
         model = Tweet
-        fields = ['id', 'content', 'likes', 'is_retweet', 'parent','image', 'timestamp']
+        fields = ['user', 'id', 'content', 'likes', 'is_retweet', 'parent', 'image', 'timestamp']
         
     def get_likes(self, obj):
         return obj.likes.count() # count the number of likes
     
+    # def get_user(self, obj):
+    #     return obj.user.id

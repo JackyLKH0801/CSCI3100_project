@@ -9,6 +9,7 @@ class FollowerRelation(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True) #timestamp of when the user started following the profile
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    location = models.CharField(max_length=220, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     followers = models.ManyToManyField(User, related_name='following', blank=True) #many to many relationship with user model. A user can have many followers and a follower can follow many users.
     timestamp = models.DateTimeField(auto_now_add=True) #timestamp of when the profile was created
