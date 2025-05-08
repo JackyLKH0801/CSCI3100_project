@@ -25,13 +25,15 @@ from account.views import (
     register_view,
 )
 from tweets.views import (
+    home_view,
     tweet_detail_view,
     tweet_list_view
 )
 
 urlpatterns = [
+    path('', home_view),
     path('admin/', admin.site.urls),
-    path('', tweet_list_view),
+    path('global', tweet_list_view),
     path('login/', login_view),
     path('logout/', logout_view),
     path('register/', register_view),

@@ -13,12 +13,10 @@ from rest_framework.authentication import SessionAuthentication
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
 # Create your views here.
-def home_view(request, *args, **kwargs):  #SOMEONE DIDNT FINISH THIS
-    username = None
-    if request.user.is_authenticated:
-        username = request.user.username
-        print(request.user)
-    return render(request, 'pages/home.html', context={}, status=200)
+def home_view(request, *args, **kwargs):
+    if not request.user.is_authenticated:
+        return redirect('/login')
+    return render(request, 'pages/feed.html')
 
 def tweet_list_view(request, *args, **kwargs): 
     return render(request, 'tweets/list.html')

@@ -10,9 +10,19 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
 from ..models import Profile
+from ..serializers import PublicProfileSerializer
 
 User = get_user_model()
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
+
+@api_view(['GET'])
+def profile_detail_api_view(request, username, *args, **kwargs):
+    qs = Profile.objects.filter(user__username__iexact=username)
+    if not qs.exists():
+        raise Response({"detail": "User not found"}, status = 404)
+    profile_obj = qs.first()
+    data = PublicProfileSerializer(instance=profile_obj).data
+    return Response(data, status = 200)
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated]) #only authenticated users can create tweets
