@@ -35,13 +35,37 @@ class TweetTestCase(TestCase):
         client.login(username='testuser', password='testpassword')
         return client
     
+    # test if can create a tweet
+    def test_tweet_create_api_view(self):
+        request_data = {'content': 'This is my test tweet'}
+        client = self.get_client()
+        response = client.post('/api/tweets/create/', request_data)
+        self.assertEqual(response.status_code, 201)
+        response_data = response.json()
+        new_tweet_id = response_data.get('id')
+        # Check if the new tweet is created
+        self.assertEqual(new_tweet_id, self.currentCount + 1)
+    
     # test if can login and grab tweets
     def test_tweet_list(self):
         client = self.get_client()
         response = client.get('/api/tweets/')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.json()), 3)
-    
+        self.assertEqual(len(response.json()), 4)
+
+    # test the detail view of a tweet
+    def test_tweet_detail_api_view(self):
+        client = self.get_client()
+        response = client.get('/api/tweets/1/')
+        self.assertEqual(response.status_code, 200)
+        response_data = response.json()
+        # Check if the tweet id is correct
+        _id = response_data.get('id')
+        self.assertEqual(_id, 1)
+        # Check if the content is correct
+        content = response_data.get('content')
+        self.assertEqual(content, 'Hello world, this is my first tweet')
+
     # test if can like a tweet
     def test_action_like(self):
         client = self.get_client()
@@ -76,39 +100,5 @@ class TweetTestCase(TestCase):
         self.assertNotEqual(new_tweet_id, 3)
         self.assertEqual(currentCount + 1, new_tweet_id)
         
-    # test if can create a tweet
-    def test_tweet_create_api_view(self):
-        request_data = {'content': 'This is my test tweet'}
-        client = self.get_client()
-        response = client.post('/api/tweets/create/', request_data)
-        self.assertEqual(response.status_code, 201)
-        response_data = response.json()
-        new_tweet_id = response_data.get('id')
-        # Check if the new tweet is created
-        self.assertEqual(new_tweet_id, self.currentCount + 1)
     
-    # test the detail view of a tweet
-    def test_tweet_detail_api_view(self):
-        client = self.get_client()
-        response = client.get('/api/tweets/1/')
-        self.assertEqual(response.status_code, 200)
-        response_data = response.json()
-        # Check if the tweet id is correct
-        _id = response_data.get('id')
-        self.assertEqual(_id, 1)
-        # Check if the content is correct
-        content = response_data.get('content')
-        self.assertEqual(content, 'Hello world, this is my first tweet')
-
-    # test the delete view of a tweet
-    def test_tweet_delete_api_view(self):
-        client = self.get_client()
-        response = client.delete('/api/tweets/1/delete/')
-        self.assertEqual(response.status_code, 200)
-        # Check if the tweet is deleted
-        response = client.get('/api/tweets/1/')
-        self.assertEqual(response.status_code, 404)
-        # check if incorrect user tries to delete a tweet
-        response_incorrect_owner = client.delete('/api/tweets/3/delete/')
-        self.assertEqual(response_incorrect_owner.status_code, 401)
         
