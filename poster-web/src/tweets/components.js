@@ -54,7 +54,7 @@ export function TweetDetailComponent(props){
           apitweetDetail(tweetId, handleBackendLookup)
           setDidLookup(true)
         }
-    },[tweetId, didLookup, setDidLookup, handleBackendLookup])
+    },[tweetId, didLookup, setDidLookup])
   return tweet === null ? null : <Tweet tweet= {tweet} className= {props.className} />
 }
 

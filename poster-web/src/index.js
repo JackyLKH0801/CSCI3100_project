@@ -3,6 +3,7 @@ import {StrictMode} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import {ProfileBadgeComponent} from './profiles'
 // import reportWebVitals from './reportWebVitals';
 import {FeedComponent, TweetsComponent, TweetDetailComponent} from './tweets';
 const rootContainer =document.getElementById('root');
@@ -49,6 +50,15 @@ tweetDetailElements.forEach(container=>{
  const root = ReactDOM.createRoot(container);
  root.render(
   React.createElement(TweetDetailComponent, container.dataset, container)
+ )
+
+})
+
+const userProfileBadgeElements = document.querySelectorAll(".POSTer-profile-badge")
+userProfileBadgeElements.forEach(container=>{
+ const root = ReactDOM.createRoot(container);
+ root.render(
+  React.createElement(ProfileBadgeComponent, container.dataset, container)
  )
 
 })
