@@ -14,8 +14,6 @@ ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
 # Create your views here.
 def home_view(request, *args, **kwargs):
-    if not request.user.is_authenticated:
-        return redirect('/login')
     return render(request, 'pages/feed.html')
 
 def tweet_list_view(request, *args, **kwargs): 
