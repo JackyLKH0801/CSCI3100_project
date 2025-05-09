@@ -23,7 +23,7 @@ class TweetTestCase(TestCase):
     def test_tweet_creation(self):
         # Create the second tweet
         tweet = Tweet.objects.create(content='forth tweet', user=User.objects.get(username='testuser'))
-        # Check if the id is 2
+        # Check if the id is 4
         self.assertEqual(tweet.id, 4)
         # Check if the content is correct
         self.assertEqual(tweet.content, 'forth tweet')
