@@ -10,9 +10,10 @@ class ProfileForm(forms.ModelForm):
     email = forms.CharField(required=False)
     class Meta:
         model = Profile
-        fields = ['bio'] #change fields with models.py 
+        fields = ['location', 'bio'] #change fields with models.py 
 
 class UserProfileForm(forms.ModelForm):
+    location = forms.CharField(required=False)
     bio = forms.CharField(required=False)
     class Meta:
         model = User

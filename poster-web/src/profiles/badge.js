@@ -15,6 +15,10 @@ function ProfileBadge(props) {
     return user ? <div>
         <UserPicture user={user} hideLink />
         <p><UserDisplay user={user} includeFullName hideLink /></p>
+        <p>{user.follower_count}{user.follower_count === 1 ? " follower" : " followers"}</p>
+        <p>{user.following_count} following</p>
+        <p>Location: {user.location}</p>
+        <p>Bio: {user.bio}</p>
         <button className='btn btn-primary' onClick={handleFollowToggle}>{currentVerb}</button>
     </div> : null
 }

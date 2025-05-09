@@ -21,7 +21,7 @@ def profile_update_view(request, *args, **kwargs):
         email = form.cleaned_data.get('email')
         user.first_name = first_name
         user.last_name = last_name
-        user.email_address = email
+        user.email = email
         user.save()
         profile_obj.save()
     context = {
