@@ -24,6 +24,9 @@ from account.views import (
     logout_view,
     register_view,
 )
+from profiles.views import (
+    activate_view,
+)
 from tweets.views import (
     home_view,
     tweet_detail_view,
@@ -40,7 +43,8 @@ urlpatterns = [
     path('<int:tweet_id>', tweet_detail_view),
     re_path(r'profiles?/', include('profiles.urls')),
     path('api/tweets/', include('tweets.api.urls')),
-    re_path(r'api/profiles?/', include('profiles.api.urls'))
+    re_path(r'api/profiles?/', include('profiles.api.urls')),
+    path('activate/', activate_view, name='activate'),
 ]
 
 if settings.DEBUG:

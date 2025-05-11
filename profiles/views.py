@@ -45,3 +45,10 @@ def profile_detail_view(request, username, *args, **kwargs):
         "is_following": is_following,
     }
     return render(request, 'profiles/detail.html',context)
+def activate_view(request, *args, **kwargs):
+    if request.method == 'POST':
+        profile = Profile.objects.get(user=request.user)
+        profile.license_active = True  # Activate the license
+        profile.save()  # Save the changes
+        return redirect('/')  # Redirect to the homepage
+    return render(request, 'profiles/activate_license.html')
