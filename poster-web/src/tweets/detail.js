@@ -1,4 +1,4 @@
-import React, { useState} from 'react'
+import React, { useState, useEffect} from 'react'
 import { ActionBtn } from './buttons';
 
 import {
@@ -8,11 +8,21 @@ import {
 
 export function ParentTweet(props){
     const {tweet} = props
-    return tweet.parent ? <Tweet isRetweet retweeter={props.retweeter} hideActions className= {' '} tweet = {tweet.parent}/> : null
+    return tweet.parent ? <Tweet
+      isRetweet 
+      retweeter={props.retweeter} 
+      hideActions 
+      className= {' '} 
+      tweet = {tweet.parent}/> : null
   }
   export function Tweet(props) {
       const {tweet, didRetweet, hideActions, isRetweet, retweeter} = props
       const [actionTweet, setActionTweet] = useState(props.tweet ? props.tweet : null) 
+      useEffect(() => {
+        if(props.tweet) {
+          setActionTweet(props.tweet)
+        }
+      }, [props.tweet])
       let className = props.className ? props.className : 'col-10 mx-auto col-md-6'
       className = isRetweet === true ? `${className} p-2 border rounded` : className
       const path = window.location.pathname;
@@ -47,6 +57,8 @@ export function ParentTweet(props){
         
         return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
       }
+
+      console.log("parent id: ", tweet.parent ? tweet.parent.id : null)
       
       return (
         <div className={`${className} tweet-card shadow-sm rounded p-3 mb-3`} 
