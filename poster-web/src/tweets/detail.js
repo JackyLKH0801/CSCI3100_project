@@ -32,6 +32,7 @@ export function ParentTweet(props){
           }
       }
     }
+    console.log("Action Tweet Object:", actionTweet)
       return <div className={className} >
         {isRetweet === true && <div className='mb-2'>
           <span className='small text-muted'>Retweet via <UserDisplay user={retweeter} /></span></div>}
@@ -50,7 +51,14 @@ export function ParentTweet(props){
             <div className='btn btn-group px-0'>
               {(actionTweet && hideActions !== true) && <React.Fragment>
                   <ActionBtn tweet = {actionTweet} didPerfromAction={handlePerformAction} action={{type:"like", display:"Likes"}} />
-                  <ActionBtn tweet = {actionTweet} didPerfromAction={handlePerformAction} action={{type:"unlike", display:"UnLike"}}/>
+                  {/* <ActionBtn tweet = {actionTweet} didPerfromAction={handlePerformAction} action={{type:"unlike", display:"UnLike"}}/> */}
+                  {actionTweet.is_liked ? (
+                    <ActionBtn 
+                      tweet={actionTweet} 
+                      didPerfromAction={handlePerformAction} 
+                      action={{type:"unlike", display:"UnLike"}}
+                    />
+                  ) : null}
                   <ActionBtn tweet = {actionTweet} didPerfromAction={handlePerformAction} action={{type:"retweet", display:"Retweet"}}/>
                 </React.Fragment>
               }

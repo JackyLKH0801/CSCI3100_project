@@ -41,14 +41,22 @@ class TweetSerializer(serializers.ModelSerializer):
     user = PublicProfileSerializer(source = 'user.profile', read_only = True)
     # user = serializers.SerializerMethodField(read_only=True)
     likes = serializers.SerializerMethodField(read_only=True)
+    is_liked = serializers.SerializerMethodField(read_only=True)
     parent = TweetCreateSerializer(read_only=True)
     
     class Meta:
         model = Tweet
-        fields = ['user', 'id', 'content', 'likes', 'is_retweet', 'parent', 'image', 'timestamp']
+        fields = ['user', 'id', 'content', 'likes', 'is_liked', 'is_retweet', 'parent', 'image', 'timestamp']
         
     def get_likes(self, obj):
         return obj.likes.count() # count the number of likes
+    
+    def get_is_liked(self, obj):
+        request = self.context.get('request')
+        user = request.user if request else None
+        if user and user.is_authenticated:
+            return user in obj.likes.all()
+        return False
     
     # def get_user(self, obj):
     #     return obj.user.id

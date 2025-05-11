@@ -22,14 +22,14 @@ def tweet_detailed_view(request, tweet_id, *args, **kwargs):
     if not qs.exists():
         return Response ({}, status=404)
     obj = qs.first()
-    serializer = TweetSerializer(obj)
+    serializer = TweetSerializer(obj, context={'request': request})
     return Response(serializer.data, status = 200)
 
 def get_paginated_queryset_response(qs, request):
     paginator = PageNumberPagination()
     paginator.page_size = 20
     paginated_qs = paginator.paginate_queryset(qs, request)
-    serializer = TweetSerializer(paginated_qs, many=True)
+    serializer = TweetSerializer(paginated_qs, many=True, context={'request': request})
     return paginator.get_paginated_response(serializer.data)
 
 @api_view(['GET'])
@@ -129,14 +129,14 @@ def tweet_action_view(request, *args, **kwargs):
         obj = qs.first()
         if action == "like": #like tweet
             obj.likes.add(request.user)
-            serializer = TweetSerializer(obj)
+            serializer = TweetSerializer(obj, context={'request': request})
             return Response(serializer.data, status=200)
         elif action == "unlike": #unlike tweet
             obj.likes.remove(request.user)
-            serializer = TweetSerializer(obj)
+            serializer = TweetSerializer(obj, context={'request': request})
             return Response(serializer.data, status=200)
         elif action == "retweet": #retweet
             new_tweet = Tweet.objects.create(user=request.user, parent=obj, content=content)
-            serializer = TweetSerializer(new_tweet)
+            serializer = TweetSerializer(new_tweet, context={'request': request})
             return Response(serializer.data, status=201)    #201 for creating new tweet
     return Response(serializer.data, status=200)
