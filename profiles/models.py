@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
+import uuid
+
 User = settings.AUTH_USER_MODEL
 
 class FollowerRelation(models.Model):
@@ -9,6 +11,7 @@ class FollowerRelation(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True) #timestamp of when the user started following the profile
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    license = models.UUIDField(default=uuid.uuid4, editable=False, unique=True) #unique license for the profile
     location = models.CharField(max_length=220, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     followers = models.ManyToManyField(User, related_name='following', blank=True) #many to many relationship with user model. A user can have many followers and a follower can follow many users.
